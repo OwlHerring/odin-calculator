@@ -39,11 +39,11 @@ document.querySelectorAll(".numerals button").forEach((button) => {
     }
 })
 
-// The thing that will separate this from newDisplayValue(0) is that it will
-// clear the board of all operands.
 function clearField(){
+    numberCount = 0;
     displayValue = [0];
     displayValueString = [String(displayValue[0])];
+    operandString = [];
 
     //newDisplayValue(0);
     decimalFunctionOn = false;
@@ -73,7 +73,14 @@ function alterDisplayValue(num){
 //}
 
 function printDisplayValue(){
-    console.log(displayValueString[numberCount]);
+    let string = "";
+    for(let i = 0; i < operandString.length; i++){
+        string += displayValueString[i];
+        string += operandString[i];
+    }
+    string += displayValueString[displayValueString.length-1];
+
+    console.log(string);
 }
 
 function operate(op, a, b){
