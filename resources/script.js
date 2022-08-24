@@ -1,6 +1,11 @@
 let displayValue = 0;
 let displayValueString = String(displayValue);
 
+// this will set to true whenever the decimal button has been pressed.
+// If true, the decimal button will not have any function if pressed again.
+// Set this back to false whenever an operand has been pressed or it's reset
+let decimalFunctionOn = false;
+
 // assigning functionality to the numeral buttons:
 //const numeralButtonsTemp = document.querySelectorAll(".numerals button");
 const numeralButtons = []; 
@@ -8,8 +13,13 @@ document.querySelectorAll(".numerals button").forEach((button) => {
     let num = Number(button.textContent);
     console.log(num);
     if(isNaN(num)) {
-        button.addEventListener('click', clearField);
-        return;
+        if(button.textContent === "C"){
+            button.addEventListener('click', clearField);
+            return;
+        }
+        else{ // if it's the decimal button 
+            button.addEventListener('click', enableDecimal);
+        } 
     }
     else{
         numeralButtons[num] = button;
@@ -24,6 +34,15 @@ document.querySelectorAll(".numerals button").forEach((button) => {
 // clear the board of all operands.
 function clearField(){
     newDisplayValue(0);
+    decimalFunctionOn = false;
+}
+
+function enableDecimal(){
+    if(decimalFunctionOn) ;
+    else{
+        decimalFunctionOn = true;
+        alterDisplayValue(".");
+    }
 }
 
 // this function is for adding a numeral (or decimal??) to displayValue and its string.
