@@ -21,9 +21,6 @@ let numberCount = 0;
 // -- set this boolean to false
 let operandFunctionOn = false;
 
-
-clearField();
-
 // assigning functionality to the numeral buttons:
 //const numeralButtonsTemp = document.querySelectorAll(".numerals button");
 const numeralButtons = []; 
@@ -48,6 +45,21 @@ document.querySelectorAll(".numerals button").forEach((button) => {
     }
 })
 
+// now we assign functionality to the operands. This will be easier.
+const operandButtons = [
+    document.querySelector(".add"),
+    document.querySelector(".subtract"),
+    document.querySelector(".multiply"),
+    document.querySelector(".divide"),
+    document.querySelector(".equals")
+];
+operandButtons.forEach((button) => {
+    if(button.textContent === "=") button.addEventListener('click', evaluate);
+    else button.addEventListener('click', () => inputOperand(button.textContent));
+})
+
+clearField();
+
 // This happens when you press =.
 function evaluate(){ 
     console.log("This has no effect yet.");
@@ -55,8 +67,15 @@ function evaluate(){
 
 // This happens when you press an operand (not =).
 function inputOperand(oper){
+    if(!operandFunctionOn){
+        operandFunctionOn = true;
+        if(decimalFunctionOn) decimalFunctionOn = false;
+        if(displayValueString[numberCount].endsWith(".")){
+            displayValueString[numberCount] = displayValueString[numberCount].slice(0, -1);
+        }
+    }
+
     operandString[numberCount] = oper;
-    operandFunctionOn = true;
     printDisplayValue();
 }
 
