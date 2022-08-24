@@ -9,8 +9,17 @@ let operandString = [];
 // If true, the decimal button will not have any function if pressed again.
 // Set this back to false whenever an operand has been pressed or it's reset
 let decimalFunctionOn = false;
+
 // this is what determines which displayValue[] we're on, basically.
 let numberCount = 0;
+
+// this will set to true whenever an operand (not =) has been pressed.
+// If true, pressing any other operand will change the operand.
+// While true, pressing a numeral button will:
+// -- add 1 to numberCount
+// -- alterDisplayValue(num), thereby progressing to the following number
+// -- set this boolean to false
+let operandFunctionOn = false;
 
 
 clearField();
@@ -39,6 +48,19 @@ document.querySelectorAll(".numerals button").forEach((button) => {
     }
 })
 
+// This happens when you press =.
+function evaluate(){ 
+    console.log("This has no effect yet.");
+}
+
+// This happens when you press an operand (not =).
+function inputOperand(oper){
+    operandString[numberCount] = oper;
+    operandFunctionOn = true;
+    printDisplayValue();
+}
+
+// This happens when you press C.
 function clearField(){
     numberCount = 0;
     displayValue = [0];
@@ -50,6 +72,7 @@ function clearField(){
     printDisplayValue();
 }
 
+// This happens when you press ".".
 function enableDecimal(){
     if(decimalFunctionOn) ;
     else{
@@ -58,9 +81,15 @@ function enableDecimal(){
     }
 }
 
-// this function is for adding a numeral (or decimal??) to displayValue and its string.
+// This happens when you press a numeral, or ".".
+// this function is for adding a numeral (or decimal) to displayValue and its string.
 function alterDisplayValue(num){
     if(displayValueString[numberCount] === "0") displayValueString[numberCount] = String(num);
+    else if(operandFunctionOn) {
+        numberCount++;
+        operandFunctionOn = false;
+        displayValueString[numberCount] = String(num);
+    }
     else displayValueString[numberCount] += num;
     displayValue[numberCount] = Number(displayValueString[numberCount]);
     printDisplayValue();
@@ -72,17 +101,23 @@ function alterDisplayValue(num){
 //    printDisplayValue();
 //}
 
+// This is what produces the output for the display 
+// (at the moment it only console.log()s it)
 function printDisplayValue(){
     let string = "";
     for(let i = 0; i < operandString.length; i++){
         string += displayValueString[i];
         string += operandString[i];
     }
-    string += displayValueString[displayValueString.length-1];
+    if(operandString.length < displayValueString.length){
+        string += displayValueString[displayValueString.length-1];
+    }
 
     console.log(string);
 }
 
+// This doesn't do anything yet but it'll work with evaluate().
+// the arguments will be (operandString[i], displayValue[i] and displayValue[i+1]).
 function operate(op, a, b){
     switch(op){
         case "+": return a + b;
