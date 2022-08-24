@@ -26,7 +26,7 @@ let operandFunctionOn = false;
 const numeralButtons = []; 
 document.querySelectorAll(".numerals button").forEach((button) => {
     let num = Number(button.textContent);
-    console.log(num);
+
     if(isNaN(num)) {
         if(button.textContent === "C"){
             button.addEventListener('click', clearField);
@@ -62,7 +62,49 @@ clearField();
 
 // This happens when you press =.
 function evaluate(){ 
-    console.log("This has no effect yet.");
+    if(displayValue.length === operandString.length){
+        console.log("evaluate ERROR"); 
+        return;
+    }
+
+    // first is multiplication and division.
+    // 5 + 10 / 2 - 3
+    // 0 0  1 1 2 2 3
+    // 5 +  5     - 3
+    // 0 0  1     1 2 
+    // turn tempResult into displayValue[i], 
+    for(let i = 0; i < operandString.length; i++){
+        if(operandString[i] === "x" || operandString[i] === "/"){
+            let tempResult = operate(operandString[i], displayValue[i], displayValue[i+1]);
+
+            displayValue.splice(i, 2, tempResult);
+            operandString.splice(i, 1);
+            i--;
+        }
+    }
+    // second is addition and subtraction.
+    for(let i = 0; i < operandString.length; i++){
+        if(operandString[i] === "+" || operandString[i] === "-"){
+            let tempResult = operate(operandString[i], displayValue[i], displayValue[i+1]);
+
+            displayValue.splice(i, 2, tempResult);
+            operandString.splice(i, 1);
+            i--;
+        }
+    }
+
+    printDisplayValue();
+}
+
+// This doesn't do anything yet but it'll work with evaluate().
+// the arguments will be (operandString[i], displayValue[i] and displayValue[i+1]).
+function operate(op, a, b){
+    switch(op){
+        case "+": return a + b;
+        case "-": return a - b;
+        case "x": return a * b;
+        case "/": return a / b;
+    }
 }
 
 // This happens when you press an operand (not =).
@@ -103,12 +145,12 @@ function enableDecimal(){
 // This happens when you press a numeral, or ".".
 // this function is for adding a numeral (or decimal) to displayValue and its string.
 function alterDisplayValue(num){
-    if(displayValueString[numberCount] === "0") displayValueString[numberCount] = String(num);
-    else if(operandFunctionOn) {
+    if(operandFunctionOn) {
         numberCount++;
         operandFunctionOn = false;
         displayValueString[numberCount] = String(num);
-    }
+    } 
+    else if(displayValueString[numberCount] === "0") displayValueString[numberCount] = String(num);
     else displayValueString[numberCount] += num;
     displayValue[numberCount] = Number(displayValueString[numberCount]);
     printDisplayValue();
@@ -133,15 +175,4 @@ function printDisplayValue(){
     }
 
     console.log(string);
-}
-
-// This doesn't do anything yet but it'll work with evaluate().
-// the arguments will be (operandString[i], displayValue[i] and displayValue[i+1]).
-function operate(op, a, b){
-    switch(op){
-        case "+": return a + b;
-        case "-": return a - b;
-        case "x": return a * b;
-        case "/": return a / b;
-    }
 }
