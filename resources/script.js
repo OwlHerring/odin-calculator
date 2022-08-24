@@ -76,24 +76,42 @@ function evaluate(){
     for(let i = 0; i < operandString.length; i++){
         if(operandString[i] === "x" || operandString[i] === "/"){
             let tempResult = operate(operandString[i], displayValue[i], displayValue[i+1]);
-
-            displayValue.splice(i, 2, tempResult);
-            operandString.splice(i, 1);
-            i--;
+            
+            // DEBUG
+            //console.log(`${displayValue[i]} ${operandString[i]} ${displayValue[i+1]} is ${tempResult}.`);
+            
+            displayValue[i] = tempResult;
+            displayValueString[i] = String(tempResult);
+            displayValue.splice(i+1,1);
+            displayValueString.splice(i+1,1);
+            operandString.splice(i,1);
+            
+            //DEBUG
+            //printDisplayValue();
+            i = -1;
         }
     }
     // second is addition and subtraction.
     for(let i = 0; i < operandString.length; i++){
         if(operandString[i] === "+" || operandString[i] === "-"){
             let tempResult = operate(operandString[i], displayValue[i], displayValue[i+1]);
+            
+            // DEBUG
+            //console.log(`${displayValue[i]} ${operandString[i]} ${displayValue[i+1]} is ${tempResult}.`)
 
-            displayValue.splice(i, 2, tempResult);
-            operandString.splice(i, 1);
-            i--;
+            displayValue[i] = tempResult;
+            displayValueString[i] = String(tempResult);
+            displayValue.splice(i+1,1);
+            displayValueString.splice(i+1,1);
+            operandString.splice(i,1);
+
+            // DEBUG
+            //printDisplayValue();
+            i = -1;
         }
     }
 
-    printDisplayValue();
+    clearFieldEvaluate(displayValue[0]);
 }
 
 // This doesn't do anything yet but it'll work with evaluate().
@@ -122,14 +140,23 @@ function inputOperand(oper){
 }
 
 // This happens when you press C.
+// Let's sneakily make this what happens when it evaluates, too.
 function clearField(){
     numberCount = 0;
     displayValue = [0];
     displayValueString = [String(displayValue[0])];
     operandString = [];
 
+    printDisplayValue();
+}
+function clearFieldEvaluate(result){
+    numberCount = 0;
+    displayValue = [result];
+    displayValueString = [String(displayValue[0])];
+    operandString = [];
+
     //newDisplayValue(0);
-    decimalFunctionOn = false;
+    (result === Math.floor(result)) ? decimalFunctionOn = false : decimalFunctionOn = true;
     printDisplayValue();
 }
 
