@@ -60,6 +60,11 @@ operandButtons.forEach((button) => {
 
 // This is where we'll create the display.
 const display = document.querySelector(".display");
+const displayFields = [];
+
+displayFields.push(document.createElement("div"));
+display.appendChild(displayFields[0]); 
+displayFields[0].classList.add("display-field");
 
 clearField();
 
@@ -69,6 +74,8 @@ function evaluate(){
         console.log("evaluate ERROR"); 
         return;
     }
+
+    let oldEquation = displayFields[displayFields.length-1].textContent;
 
     // first is multiplication and division.
     // 5 + 10 / 2 - 3
@@ -152,14 +159,26 @@ function clearField(){
 
     printDisplayValue();
 }
-function clearFieldEvaluate(result){
+function clearFieldEvaluate(oldEquation, result){
     numberCount = 0;
     displayValue = [result];
     displayValueString = [String(displayValue[0])];
     operandString = [];
 
+    // I'll put some sort of function here that:
+    // - takes this string: `${oldEquation} = <br><span class="solution">${result}</span>`
+    // - assigns it to the current .display-field div
+    // - does some javascript magic to add a new .display-field div
+    // - and make it so that printDisplayValue() is altering the textContent of that instead.
+
+
+
     //newDisplayValue(0);
     (result === Math.floor(result)) ? decimalFunctionOn = false : decimalFunctionOn = true;
+    
+    
+    displayFields[displayFields.length-1].innerHTML = `${oldEquation} = <br><span class="solution">${result}</span>`;
+    newDisplayField();
     printDisplayValue();
 }
 
@@ -205,6 +224,11 @@ function printDisplayValue(){
         string += displayValueString[displayValueString.length-1];
     }
 
-    display.textContent = string;
+    displayFields[displayFields.length-1].textContent = string;
 }
 
+function newDisplayField(){
+    displayFields.push(document.createElement("div"));
+    display.appendChild(displayFields[displayFields.length-1]); 
+    displayFields[displayFields.length-1].classList.add("display-field");
+}
