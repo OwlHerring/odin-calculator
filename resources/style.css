@@ -33,6 +33,10 @@ body {
     background-color:aliceblue;
 
     border: 1px solid darkgray;
+
+    display:flex;
+    flex-direction:column-reverse;
+    align-items:flex-end;
 }
 .buttons {
     margin-top:auto;

@@ -58,6 +58,9 @@ operandButtons.forEach((button) => {
     else button.addEventListener('click', () => inputOperand(button.textContent));
 })
 
+// This is where we'll create the display.
+const display = document.querySelector(".display");
+
 clearField();
 
 // This happens when you press =.
@@ -195,11 +198,13 @@ function printDisplayValue(){
     let string = "";
     for(let i = 0; i < operandString.length; i++){
         string += displayValueString[i];
-        string += operandString[i];
+        (operandString[i] === "/") ? string += operandString[i]
+                                   : string += " " + operandString[i] + " ";
     }
     if(operandString.length < displayValueString.length){
         string += displayValueString[displayValueString.length-1];
     }
 
-    console.log(string);
+    display.textContent = string;
 }
+
