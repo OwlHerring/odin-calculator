@@ -177,8 +177,8 @@ function clearFieldEvaluate(oldEquation, result){
     (result === Math.floor(result)) ? decimalFunctionOn = false : decimalFunctionOn = true;
     
     
-    displayFields[displayFields.length-1].innerHTML = `${oldEquation} = <br><span class="solution">${result}</span>`;
-    newDisplayField();
+    //displayFields[displayFields.length-1].innerHTML = `${oldEquation} = <br><span class="solution">${result}</span>`;
+    //newDisplayField();
     printDisplayValue();
 }
 
