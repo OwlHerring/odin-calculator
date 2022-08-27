@@ -21,6 +21,13 @@ let numberCount = 0;
 // -- set this boolean to false
 let operandFunctionOn = false;
 
+// this will set to true whenever you've pressed = and an answer is displaying.
+// If true, pressing a numeral will replace the displayed answer
+// (so you can't add numerals to the end of an answer).
+// Meanwhile, you can use the displayed answer as normal with operands.
+// Set this to false when you press a numeral or an operand.
+let justEvaluated = false;
+
 // assigning functionality to the numeral buttons:
 //const numeralButtonsTemp = document.querySelectorAll(".numerals button");
 const numeralButtons = []; 
@@ -143,6 +150,8 @@ function operate(op, a, b){
 
 // This happens when you press an operand (not =).
 function inputOperand(oper){
+    if(justEvaluated) justEvaluated = false;
+
     if(!operandFunctionOn){
         operandFunctionOn = true;
         if(decimalFunctionOn) decimalFunctionOn = false;
@@ -170,6 +179,8 @@ function clearFieldEvaluate(oldEquation, result){
     displayValue = [result];
     displayValueString = [String(displayValue[0])];
     operandString = [];
+
+    justEvaluated = true;
 
     // I'll put some sort of function here that:
     // - takes this string: `${oldEquation} = <br><span class="solution">${result}</span>`
@@ -205,8 +216,9 @@ function alterDisplayValue(num){
         operandFunctionOn = false;
         displayValueString[numberCount] = String(num);
     } 
-    else if(displayValueString[numberCount] === "0") displayValueString[numberCount] = String(num);
+    else if(displayValueString[numberCount] === "0" || justEvaluated) displayValueString[numberCount] = String(num);
     else displayValueString[numberCount] += num;
+    justEvaluated = false;
     displayValue[numberCount] = Number(displayValueString[numberCount]);
     printDisplayValue();
 }
