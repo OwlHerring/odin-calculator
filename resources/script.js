@@ -121,7 +121,7 @@ function evaluate(){
         }
     }
 
-    clearFieldEvaluate(displayValue[0]);
+    clearFieldEvaluate(oldEquation, displayValue[0]);
 }
 
 // This doesn't do anything yet but it'll work with evaluate().
@@ -177,8 +177,8 @@ function clearFieldEvaluate(oldEquation, result){
     (result === Math.floor(result)) ? decimalFunctionOn = false : decimalFunctionOn = true;
     
     
-    //displayFields[displayFields.length-1].innerHTML = `${oldEquation} = <br><span class="solution">${result}</span>`;
-    //newDisplayField();
+    displayFields[displayFields.length-1].innerHTML = `${oldEquation} = <br><span class="solution">${result}</span>`;
+    newDisplayField();
     printDisplayValue();
 }
 
@@ -228,7 +228,12 @@ function printDisplayValue(){
 }
 
 function newDisplayField(){
+    displayFields[displayFields.length-1].classList.add("old");
+
     displayFields.push(document.createElement("div"));
     display.appendChild(displayFields[displayFields.length-1]); 
     displayFields[displayFields.length-1].classList.add("display-field");
+
+    // put something here to remove the first child of display if it clips 
+    // above the display box.
 }
