@@ -79,6 +79,16 @@ displayFields[0].classList.add("display-field");
 // (we can't use display.offsetHeight because it'll change)
 const displayHeight = display.offsetHeight;
 
+// This is here to add keyboard functionality.
+document.body.addEventListener('keydown', (e) => {
+    if (!isNaN(Number(e.key))) alterDisplayValue(Number(e.key));
+    else if (e.key === "+" || e.key === "-" || e.key === "x" || e.key === "/") inputOperand(e.key);
+    else if (e.key === "=" || e.key === "Enter") evaluate();
+    else if (e.key === ".") enableDecimal();
+    else if (e.key === "c" || e.key === "C" || e.key === "Escape") clearField();
+    console.log(e.key);
+});
+
 clearField();
 
 // This happens when you press =.
