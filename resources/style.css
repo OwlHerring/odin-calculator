@@ -49,6 +49,10 @@ body {
     background-color:aliceblue;
     padding: 0px 0px 5px;
 }
+.display-field.old {
+    opacity:1;
+}
+
 .solution {
     font-size:large;
 }

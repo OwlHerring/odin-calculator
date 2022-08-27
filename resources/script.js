@@ -66,6 +66,12 @@ displayFields.push(document.createElement("div"));
 display.appendChild(displayFields[0]); 
 displayFields[0].classList.add("display-field");
 
+// This is the const that represents the height of the display.
+// This is used for the function that removes old results before
+// they can clip above the top.
+// (we can't use display.offsetHeight because it'll change)
+const displayHeight = display.offsetHeight;
+
 clearField();
 
 // This happens when you press =.
@@ -236,4 +242,13 @@ function newDisplayField(){
 
     // put something here to remove the first child of display if it clips 
     // above the display box.
+    while(display.offsetHeight > displayHeight){
+        display.removeChild(display.firstChild);
+    }
+
+    document.querySelectorAll(".old").forEach((old) => {
+        let temp = window.getComputedStyle(old).getPropertyValue("opacity");
+        temp *= 2 / 3;
+        old.style.opacity = temp;
+    });
 }
